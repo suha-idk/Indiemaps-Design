@@ -1,0 +1,682 @@
+# Build Raahi — A Voice-First AI Navigation Copilot for India
+## Frontend-Only MVP Design and Interactive Prototype
+
+Act as a world-class product designer, senior frontend engineer, and UX specialist who has designed navigation products comparable to Google Maps, Waze, Uber Driver, and Rapido Captain.
+
+Design and implement a polished, highly intuitive, mobile-first frontend for **Raahi (राही)**, a voice-first AI navigation copilot designed primarily for Indian taxi drivers, auto-rickshaw drivers, bike riders, delivery partners, commercial drivers, and everyday commuters.
+
+**IMPORTANT: Build the frontend and interactive prototype only. Do not implement a backend, database, authentication system, AI model integration, MCP server, external API integration, or real navigation calculations.** Use realistic mock data and local frontend state to demonstrate how the finished product will behave. Structure the UI cleanly so that real Google Maps, Gemini, speech recognition, and routing services can be integrated later.
+
+Do not create a generic dashboard, a generic AI chat interface, or a landing page. Build the actual navigation application.
+
+---
+
+# 1. Product vision
+
+Raahi lets a driver control a journey by speaking naturally in their preferred language.
+
+A driver should be able to open the app, see the map, tap one large microphone button, and say something like:
+
+- "Mujhe Connaught Place se Rohini jaana hai."
+- "Beech mein ek CNG pump add kar do."
+- "Airport jaane se pehle Dhaula Kuan par rukna hai."
+- "Toll road mat lena."
+- "Find the nearest petrol pump along my route."
+- "Add a chai stop, but don't increase my journey by more than ten minutes."
+- "Destination change karke India Gate kar do."
+- "Sabse fast route batao."
+- "Avoid traffic and find another route."
+- "Mujhe ghar le chalo."
+- "Raste mein ek passenger pickup karna hai."
+- "Take me to Rohini, but avoid tolls and highways if possible."
+
+The UI should communicate that the copilot understands the driver's intention, updates the journey, and reflects the change visually on the map.
+
+The driver must not need to navigate complex menus or repeatedly type addresses.
+
+**Core product principle: Voice first, map always visible, controls simple, driver remains in control.**
+
+---
+
+# 2. Target audience and usability requirements
+
+Design for two overlapping audiences:
+
+1. Drivers who are not comfortable with technology, may have limited experience with complicated apps, and prefer speaking their native language.
+2. Technology-savvy drivers who already understand navigation apps but want to save time by controlling routes through natural language.
+
+Many users will use Android phones mounted on their vehicles. The product must also work well in a desktop browser for team demonstrations.
+
+Prioritize:
+- Very large, easy-to-understand controls.
+- Clear labels and familiar icons.
+- High contrast in daylight.
+- Minimal reading and typing.
+- Clear voice recording feedback.
+- Large tap targets, ideally 48–56 px for primary actions.
+- Simple Hindi and English labels, avoiding technical jargon.
+- Friendly, concise assistant responses.
+- Obvious recovery actions when something goes wrong.
+- No dense settings panels or unnecessary cards.
+- No tiny buttons that are difficult to tap while mounted in a vehicle.
+
+Never encourage drivers to interact with the interface while driving. Include a subtle, sensible safety reminder that drivers should make changes while safely stopped.
+
+---
+
+# 3. Visual direction and brand identity
+
+Create a professional, modern navigation interface inspired by the usability of Google Maps and Waze, without copying their branding or exact layouts.
+
+## Color palette
+
+Use a light map canvas with dark, high-contrast controls.
+
+- Deep navy: #0B1220
+- Dark control surface: #111827
+- Secondary dark surface: #1F2937
+- Teal primary accent: #14B8A6
+- Bright teal hover/active: #2DD4BF
+- Main background: #F3F6FA
+- Map background: #E8EEF2
+- Primary text: #111827
+- Secondary text: #64748B
+- Success: #16A34A
+- Warning: #F59E0B
+- Error: #DC2626
+- White: #FFFFFF
+
+Use the dark navy and teal palette for the application header, copilot controls, primary buttons, and important journey actions. Keep the map area light and visually prominent.
+
+Use a modern, legible sans-serif font with excellent support for Devanagari. Prefer Inter for Latin text and a compatible Devanagari font such as Noto Sans Devanagari for Hindi.
+
+Use rounded corners, restrained shadows, consistent spacing, clean typography, and subtle animations.
+
+The interface should feel like a credible navigation product, not a futuristic AI concept mockup.
+
+Avoid:
+- Excessive gradients.
+- Glassmorphism everywhere.
+- Neon colors.
+- Huge decorative hero sections.
+- Too many floating cards.
+- Excessive pill badges.
+- Unnecessary illustrations.
+- Overly complex route visualizations.
+- A large chat panel that steals attention from the map.
+
+---
+
+# 4. Main application layout
+
+Create the actual app interface at `/`.
+
+The map is the main visual element and must occupy the majority of the available viewport.
+
+## Desktop and laptop layout
+
+Use a layout with:
+
+- A compact top navigation bar.
+- A large map occupying approximately 70–80% of the usable application area.
+- A compact floating route summary card over the map.
+- Floating map controls.
+- A compact AI copilot panel below the map, or a bottom-docked panel that does not obscure most of the map.
+- A small, collapsible journey itinerary that can be opened when needed.
+
+Do not use a permanent, oversized right sidebar that divides attention equally between the map and chatbot.
+
+The map should remain the primary visual anchor.
+
+Suggested structure:
+
+**Top navigation**
+- Raahi logo and wordmark: Raahi राही.
+- Current journey status.
+- English / हिंदी language toggle.
+- Light / dark control-theme toggle.
+- A simple settings icon.
+
+**Map area**
+- Large map canvas.
+- Current location marker.
+- Destination marker.
+- Ordered intermediate stop markers.
+- Visible route polyline.
+- Route distance and estimated duration.
+- Floating recenter-location button.
+- Map zoom controls if useful.
+- A compact route options button.
+- A clear map loading, error, and unavailable state.
+
+**Floating route summary**
+- Destination name.
+- ETA.
+- Total distance.
+- Number of stops.
+- A compact expand/collapse control.
+- An optional "Start navigation" button.
+
+**Copilot**
+- Compact assistant conversation or status.
+- Large microphone button.
+- Text input fallback.
+- Send button.
+- Language indicator.
+- Voice listening indicator.
+- A compact response area.
+- Pending change or recently applied change card.
+- No large empty chat window.
+
+On small screens, prioritize the map and use a bottom sheet for the copilot and itinerary. The map should remain visible above the sheet whenever practical.
+
+## Mobile layout
+
+Design mobile as a first-class experience, not a squeezed desktop layout.
+
+- Use the full available screen for the map.
+- Keep the top bar compact.
+- Display ETA and remaining distance in a small floating card.
+- Position the microphone and text controls near the bottom, above the device's safe-area inset.
+- Let the copilot expand into a bottom sheet when the user interacts with it.
+- Make the itinerary available through a clearly labeled button.
+- Ensure the keyboard does not permanently obscure the map or voice controls.
+- Make all important actions reachable with one hand.
+- Use appropriately sized buttons and spacing.
+
+Use a responsive layout rather than separate unrelated designs.
+
+---
+
+# 5. Map experience
+
+The map is the heart of Raahi.
+
+Since this is a frontend-only prototype, create a convincing map experience using an available map component if the project already has one. If no real map integration exists, build a clean, clearly labeled simulated map surface with realistic road-like paths, muted geographical styling, location markers, and an obvious route line.
+
+Do not fabricate a real Google Maps connection or imply that simulated coordinates, distances, or ETAs come from a live routing service.
+
+If the map is simulated, show a small, unobtrusive "Demo map" label.
+
+Do not make the entire screen a decorative schematic diagram. The visual experience should resemble an actual navigation map.
+
+## Route appearance
+
+- Use a strong, readable teal or blue route line.
+- Use a clear origin marker.
+- Use numbered intermediate stop markers.
+- Use a distinct destination marker.
+- Keep marker labels short and readable.
+- Show the active route more prominently than alternative routes.
+- Avoid overlapping labels where possible.
+- Display traffic indicators only as explicitly simulated examples.
+- Support route changes in the prototype so the line and stop markers visibly update.
+
+Provide a floating route summary with:
+- ETA, for example "42 min".
+- Distance, for example "18.6 km".
+- Destination.
+- Number of intermediate stops.
+
+All example figures must be marked as demo data where appropriate.
+
+## Map controls
+
+Include:
+- Recenter on current location.
+- Zoom in and out if useful.
+- Expand map.
+- Show itinerary.
+- Route options.
+- Map theme control, if it adds value.
+
+Keep the controls familiar and minimal.
+
+---
+
+# 6. Voice-first AI copilot
+
+The copilot is Raahi's differentiating feature.
+
+It should feel like speaking to a capable assistant, not filling out a form.
+
+## Primary microphone interaction
+
+Create one large, unmistakable microphone button.
+
+Use clear visual states:
+
+1. **Ready:** "Tap to speak" / "बोलने के लिए टैप करें".
+2. **Listening:** Animated microphone indicator with "Listening…" / "सुन रहा हूँ…".
+3. **Processing:** "Understanding your request…" / "आपकी बात समझ रहा हूँ…".
+4. **Applying:** "Updating your route…" / "रूट अपडेट हो रहा है…".
+5. **Success:** "Route updated" / "रूट अपडेट हो गया".
+6. **Clarification:** A concise question with one or two relevant options.
+7. **Error:** A helpful, actionable recovery message.
+
+Show a live transcript preview during recording where appropriate.
+
+Provide a clear way to stop recording.
+
+For this prototype, microphone interaction may use simulated speech states or existing browser speech capabilities if already available. Do not add a backend or claim that speech recognition works when it does not.
+
+Do not force the user to type after speaking. Design the interaction so a completed voice request can be submitted automatically when the recording ends, with appropriate feedback.
+
+Keep text entry available as a secondary alternative.
+
+## Language support
+
+Provide a persistent, accessible language selector:
+- English
+- हिंदी
+- Hinglish
+
+The UI language and spoken-command language must be conceptually separate.
+
+A user viewing the interface in English should still be able to speak Hindi or Hinglish. A user viewing the interface in Hindi should still be able to speak English.
+
+Localize all visible UI labels, placeholders, button text, status messages, itinerary labels, and error messages for the selected interface language.
+
+Do not translate proper place names unnecessarily.
+
+Provide natural, concise example assistant responses:
+
+English:
+"Done. I've added a CNG stop before your destination."
+
+Hindi:
+"हो गया। मैंने आपके गंतव्य से पहले CNG स्टेशन जोड़ दिया है।"
+
+Hinglish:
+"Ho gaya. Maine destination se pehle CNG stop add kar diya hai."
+
+Use realistic assistant message styling with small status icons, not oversized chat bubbles.
+
+---
+
+# 7. Natural-language command examples
+
+Display a small, optional row of tappable example commands near the copilot. They should help new users discover what they can say.
+
+Examples:
+- "Add a CNG station near me"
+- "Avoid tolls"
+- "Add a chai stop"
+- "Find a petrol pump near the start"
+- "Change my destination"
+- "Find the fastest route"
+
+Localized Hindi examples:
+- "Mujhe ghar le chalo"
+- "Beech mein CNG pump add karo"
+- "Toll se bachao"
+- "Ek chai ka stop add karo"
+- "Sabse tez route batao"
+
+Selecting an example should demonstrate the intended UI interaction using mock state.
+
+Keep examples compact and avoid cluttering the primary screen.
+
+---
+
+# 8. Dynamic itinerary and journey editing
+
+Create a lightweight, collapsible itinerary that reflects the current journey.
+
+Example:
+
+Origin
+Connaught Place, New Delhi
+
+Stop 1
+Dhaula Kuan
+
+Stop 2
+CNG station
+
+Destination
+Rohini, New Delhi
+
+Each stop should have:
+- Name.
+- Optional locality.
+- Stop type, such as pickup, drop, CNG, petrol, rest, or custom.
+- Position in the journey.
+- A small edit/remove affordance.
+
+The final destination should be visually distinct from intermediate stops.
+
+Provide clear controls for:
+- Add stop.
+- Remove stop.
+- Change destination.
+- Reorder stops.
+- Edit stop details.
+- Show all stops.
+
+These are frontend prototype interactions only. Use local React state to update the interface and simulated route.
+
+The itinerary must stay synchronized with the route displayed on the map.
+
+**Critical invariant:** Removing, adding, or reordering an intermediate stop must never accidentally replace the final destination. Preserve the origin, final destination, and unaffected stop order unless the user explicitly changes them.
+
+Avoid creating a full-screen itinerary editor. Use a compact card, drawer, or bottom sheet.
+
+---
+
+# 9. Natural, low-friction route changes
+
+The product should feel conversational and hands-free.
+
+Do not make the interface show a large confirmation dialog after every simple action.
+
+For ordinary, unambiguous commands in the prototype:
+- Apply the mock change immediately.
+- Update the route markers and itinerary.
+- Show a small success notification.
+- Offer a compact Undo action.
+- Provide a brief assistant response.
+
+Examples:
+- Add a known stop.
+- Remove a clearly identified stop.
+- Change the destination to an unambiguous place.
+- Switch route preference.
+- Enable avoid-tolls preference.
+
+For ambiguous requests:
+- Ask a concise clarifying question.
+- Show no more than two useful choices initially.
+- Allow the user to choose a candidate.
+
+For consequential or genuinely uncertain actions:
+- Preserve the current journey and ask for clarification before applying changes.
+
+Do not make every interaction require confirmation. Use undo and transparent status feedback for ordinary, reversible mock changes.
+
+## Undo and recovery
+
+After a change, display a small temporary notification such as:
+
+"Added CNG station before Rohini. Undo"
+
+If the user selects Undo, restore the previous itinerary and route display.
+
+Also include a subtle recent-action indicator in the copilot so users understand what changed.
+
+---
+
+# 10. Route options and driver preferences
+
+Add a compact route-options sheet with simple toggles or choices for:
+
+- Avoid tolls.
+- Prefer fastest route.
+- Prefer shortest distance.
+- Avoid highways.
+- Avoid traffic, where supported by the eventual routing provider.
+- Travel mode: Car / Bike / Two-wheeler.
+
+Use simple descriptions rather than technical terms.
+
+For example:
+
+**Avoid tolls**
+"Prefer routes without toll roads."
+
+**Fastest route**
+"Prioritize the shortest estimated travel time."
+
+**Shortest distance**
+"Prefer fewer kilometres, even if the journey takes longer."
+
+**Avoid highways**
+"Prefer roads that avoid highways where possible."
+
+Make selections visually clear.
+
+Changing these options in the prototype should update the selected preferences and provide simulated route feedback. Do not pretend to calculate actual optimized routes.
+
+---
+
+# 11. Nearby stop suggestions
+
+Design a compact nearby-stop suggestion component for requests such as:
+
+- Find a petrol pump near my starting point.
+- Find the nearest CNG station.
+- Add a tea shop along the way.
+- Find a washroom near my current location.
+- Find a fuel station before the destination.
+
+Show a small, useful list of two or three candidates.
+
+Each candidate should include:
+- Name.
+- Category.
+- Approximate distance or detour, explicitly labeled as demo information.
+- A short reason it might be useful.
+- A clear "Add stop" action.
+
+Demonstrate the difference between:
+- Near current location or origin.
+- Along the current route.
+- Near a particular stop.
+- Near the destination.
+
+Use mock candidates relevant to the selected region in the demo. Do not always show the same two stations regardless of location.
+
+If the user selects a candidate, add it to the mock itinerary and update the route illustration.
+
+Avoid a long chain of selection modals. Ask the user to choose only when there is genuine ambiguity.
+
+---
+
+# 12. Start navigation experience
+
+Include a prominent but compact "Start navigation" button when a destination exists.
+
+When clicked in the prototype:
+- Transition from route-planning mode to active-navigation mode.
+- Emphasize the active route.
+- Show a simulated next instruction, such as "Continue straight for 500 m".
+- Display remaining distance and estimated arrival.
+- Show a clear "End navigation" control.
+- Keep the copilot accessible so the user can request a stop or destination change.
+
+Use clear demo labels. Do not claim to provide live GPS tracking, actual turn-by-turn guidance, background navigation, or automatic rerouting.
+
+The purpose is to demonstrate the intended product flow, not implement a real navigation engine.
+
+---
+
+# 13. Visual design details
+
+Create a clean visual hierarchy.
+
+## Header
+- Compact Raahi branding.
+- Small route-status indicator.
+- Language selector.
+- Light/dark theme toggle.
+- Minimal settings control.
+
+## Main map
+- Dominates the viewport.
+- Light, muted map colors.
+- Strong active-route line.
+- High-contrast origin, stop, and destination markers.
+- Minimal floating controls.
+- Small route summary.
+
+## Copilot
+- Compact dark surface with teal accents.
+- Large microphone control.
+- Simple text input.
+- Clear listening and processing indicators.
+- Brief assistant messages.
+- Collapsible recent-action card.
+- No oversized confirmation banner.
+- No permanent chat panel that competes with the map.
+
+## Itinerary
+- Compact and collapsible.
+- Clear origin-to-destination sequence.
+- Numbered stops.
+- Distinct destination styling.
+- Easy edit and removal controls.
+
+## Feedback
+- Small success toast.
+- Clear error state.
+- Helpful Undo.
+- Minimal loading indicator.
+
+Use consistent spacing, typography, icon sizing, button hierarchy, and motion.
+
+Avoid excessive borders and nested cards.
+
+---
+
+# 14. Light and dark themes
+
+Implement a working theme toggle for the application controls.
+
+Light theme:
+- Light surfaces.
+- Dark readable text.
+- Teal primary actions.
+- Light map canvas.
+
+Dark theme:
+- Deep navy and charcoal control surfaces.
+- Readable light text.
+- Teal highlights.
+- Preserve map readability; do not force the map into an artificial dark appearance if no dark map style is available.
+
+Changing the theme must not reset the route, itinerary, language, copilot state, or selected route preferences.
+
+Use semantic design tokens instead of scattering color values throughout components.
+
+Persist the theme preference locally where appropriate.
+
+---
+
+# 15. Required interactions for the prototype
+
+Implement the following as working frontend interactions with React state and realistic mock data:
+
+1. Switch the interface language.
+2. Toggle the theme.
+3. Start and stop a simulated voice session.
+4. Enter and submit a typed command.
+5. Submit a completed simulated voice transcript.
+6. Create a journey.
+7. Add an intermediate stop.
+8. Remove an intermediate stop.
+9. Change the final destination.
+10. Reorder stops.
+11. Open and close the itinerary.
+12. Expand and collapse the copilot.
+13. Toggle route preferences.
+14. Display nearby stop candidates.
+15. Select a nearby candidate.
+16. Undo a journey change.
+17. Start simulated navigation.
+18. End simulated navigation.
+19. Recenter the map illustration.
+20. Show helpful empty, loading, success, and error states.
+
+All interactions should work with realistic mock data and maintain consistent state between the map, route summary, itinerary, and copilot.
+
+Do not leave visible controls that do nothing.
+
+---
+
+# 16. Example initial demo journey
+
+Use a familiar Delhi-NCR demonstration journey.
+
+Origin:
+Connaught Place, New Delhi.
+
+Intermediate stop:
+Dhaula Kuan, New Delhi.
+
+Final destination:
+Rohini, New Delhi.
+
+Show a route line, numbered stop markers, route summary, and a compact itinerary.
+
+Include a subtle label:
+"Demo journey — illustrative route data."
+
+Make the journey editable through the interface.
+
+Do not hardcode the sample journey as the only possible journey. Users should be able to select sample journeys or create a new mock journey using the interface.
+
+Do not claim the route line, distance, ETA, or traffic information is live.
+
+---
+
+# 17. Technical implementation requirements
+
+- Build the frontend within the existing Lovable project.
+- Use React and TypeScript with reusable components.
+- Use the existing project framework and conventions wherever practical.
+- Use Tailwind CSS and the existing component library if available.
+- Use Lucide icons or an equivalent consistent icon system.
+- Keep components modular and maintainable.
+- Use React state for the prototype's interactive behavior.
+- Use local mock data for destinations, stops, route summaries, and nearby suggestions.
+- Keep the map, itinerary, and copilot synchronized through a shared journey state.
+- Use stable IDs for stops instead of array indices as permanent identifiers.
+- Maintain strict separation between the final destination and intermediate stops.
+- Use semantic HTML, accessible labels, keyboard support, and visible focus states.
+- Ensure responsive behavior for desktop, tablet, and Android-sized screens.
+- Respect reduced-motion preferences.
+- Avoid unnecessary dependencies.
+
+Do not add:
+- A backend.
+- Database tables.
+- User authentication.
+- Lovable Cloud setup.
+- Gemini API calls.
+- Google Maps API calls.
+- Billing or API keys.
+- MCP tools.
+- Real geocoding.
+- Real route calculations.
+- Real GPS tracking.
+
+If a map connector is already configured, do not assume it is authorized or working. Keep this task focused on the frontend design and simulated behavior.
+
+Design components so future integrations can replace the mock services without requiring a complete redesign.
+
+---
+
+# 18. Quality standards
+
+The result should look and feel like a credible, well-designed navigation MVP.
+
+Before finishing, check that:
+
+- The map is the dominant feature.
+- The interface is easy to understand without technical knowledge.
+- The microphone is the most obvious interaction.
+- The route summary is always easy to find when a journey exists.
+- The copilot does not dominate the map.
+- The interface is fully bilingual at minimum in English and Hindi, with Hinglish command examples.
+- The language toggle does not reset application state.
+- Adding or removing a stop updates the itinerary and map together.
+- The final destination never changes accidentally.
+- Undo restores the previous state.
+- Route preferences visibly update.
+- The prototype works on laptop browsers and narrow mobile screens.
+- All visible buttons have meaningful actions.
+- Empty, loading, and error states are designed.
+- The app uses consistent design tokens and polished typography.
+- The simulated map and data are never misrepresented as live navigation.
+
+**Final instruction:** Build the actual frontend now. Do not merely return a design plan, a product specification, or a written description. Implement the UI and its core mock interactions in the Lovable project. Preserve any existing working project configuration and avoid rebuilding unrelated infrastructure.

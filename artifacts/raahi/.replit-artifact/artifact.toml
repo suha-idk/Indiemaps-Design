@@ -1,0 +1,24 @@
+kind = "mobile"
+previewPath = "/"
+title = "Raahi"
+description = "A voice-first navigation copilot prototype for drivers and commuters in India. Explore a Delhi demo journey, manage stops, and interact with simulated voice commands in English, Hindi, or Hinglish without live navigation services."
+version = "1.0.0"
+id = "artifacts/raahi"
+router = "expo-domain"
+
+[[services]]
+name = "expo"
+ensurePreviewReachable = "/status"
+paths = [ "/" ]
+localPort = 22305
+
+[services.development]
+run = "pnpm --filter @workspace/raahi run dev"
+
+[services.production]
+build = [ "pnpm", "--filter", "@workspace/raahi", "run", "build" ]
+run = [ "pnpm", "--filter", "@workspace/raahi", "run", "serve" ]
+
+[services.env]
+PORT = "22305"
+BASE_PATH = "/"
